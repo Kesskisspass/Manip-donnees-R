@@ -1,0 +1,313 @@
+# Découverte de R et RSudio
+
+# I. Première manipulations ####
+
+# Création de variables
+a <- 3
+b <- "coucou"
+c <- TRUE
+
+# 1. Lister les variables disponibles dans l'environnement
+ls()
+
+# 2. mode() permet d'afficher le type d'une variable ou de le modifier
+# numérique
+mode(a)
+# string
+mode(b)
+# logical (booléen), ici on modifie le type de variable en str
+mode(c) <- "character"
+mode(c)
+# Puis on le repasse en booléen
+mode(c) <- "logical"
+mode(c)
+
+# 3. Renvoie un booléen (test sur le type de variable)
+is.numeric(a) # Renvoie True
+is.logical(b) # Renvoie False
+is.character(c) # Renvoie False
+
+# 4. as.numeric, as.logical, as.character
+
+# as.numeric permet d'effectuer un test de conversion automatique (si possible)
+# et d'utiliser la variable comme une valeur numérique 
+false_number = "5"
+as.numeric(false_number) + 5
+mode(false_number)
+
+# as.logical teste si la variable est convertissable en booléen
+false_logical = "TRUE"
+mode(false_logical)
+mode(as.logical(false_logical))
+as.logical("blabla") # Renvoie NA
+as.logical(0) #Renvoie FALSE
+as.logical(1) # Renvoie TRUE
+
+# as.character test et renvoie la variable en tant que string
+as.character(TRUE) # Renvoie "TRUE"
+as.character(54) # "54"
+
+# 5. Supprimer une variable
+rm(a)
+rm(b,c)
+a <- 3
+b <- "du texte"
+c <- FALSE
+
+# 6. Supprimer toutes les variables de l'environnement
+rm(list = ls())
+
+
+# Documentation des fonctions
+
+# 1. aide is.numeric()
+?is.numeric
+help("is.numeric")
+# Description / Utilisation / Arguments ... / Exemples
+
+# 2. ??is.numeric
+??is.numeric
+
+# 3. Afficher le code dans la console
+is.numeric
+
+# II. Manipulation d'objets ####
+
+# A. Création de vecteurs
+
+# 1.
+?c
+my_vec_num <- c(5,7,9,54,2,-5)
+
+# 2.
+mode(my_vec_num)
+
+# 3.
+length(my_vec_num)
+
+# 4.
+str(my_vec_num) # affiche le type de la liste, sa longueur et la liste
+
+# 5. 
+my_vec_num <- c(my_vec_num, -15, 100)
+
+# 6.
+my_vec_logi <- c(TRUE,FALSE,TRUE)
+my_vec_char <- c("a","b","c","d","e")
+
+# 7.
+sum_vec <- c(my_vec_num,my_vec_logi,my_vec_char)
+mode(sum_vec)
+
+# B. Opérations de base sur les vecteurs
+
+# 1.
+v <- rep(TRUE,10) # Créer un objet qui se réplique
+
+# 2.
+c1 <- 8:30
+# seq(8,30) # Autre solution seq(8,30, by=1)
+
+# 3.
+c1[1] # Les indices commencent à 1
+c1[15]
+
+# 4.
+c2 <- c(c1[2],c1[5],c1[8])
+# c2 <- c1[c(2,5,8)]
+
+# 5.
+c3 <- c2[-2]
+
+# 6.
+names(c2) <- c("pommes","poires","prunes")
+c2
+str(c2)
+c2["poires"] # On peut appeler les colonnes
+
+# 7.
+min(c2)
+max(c2)
+mean(c2)
+sum(c2)
+summary(c2)
+
+# C. Expressions logiques
+
+# 1
+c1 < 16 # Renvoie un vecteur de conditions (true si vrai et false sinon)
+
+c1 == 14
+c1 != 9
+
+# 2.
+c1 == 12 | c1 == 28
+
+# 3.
+cond1 <- c1 > 16 & c1 < 22
+
+# 4.
+c1[cond1] # Cela applique un filtre
+
+# 5.
+cond2 <- c1 >= 8 & c1 <= 12 | c1 >= 15 & c1 <= 17
+c4 <- c1[cond2]
+
+# 6.
+c1[cond1] <- 0
+
+# D. Création de matrices
+
+# 1.
+mat1 <- matrix(data = 1:40, nrow = 10, ncol = 4)
+nrow(mat1)
+ncol(mat1)
+
+# 2.
+mat2 <- matrix(mat1, nrow = 10, ncol = 4, byrow = TRUE)
+
+# 3.
+mat1[1,]
+mat1[5,]
+mat1[,2]
+mat1[1,4]
+
+# 4.
+mat4 <- matrix(sample(1:100,40), nrow = 10, ncol = 4) # crée 40 valeurs entre 1 et 100
+
+# 5.
+mat4[mat4 > 10]
+
+# 6.
+
+# 7.
+mat4[mat4[, 1] > 12, ]
+
+# 8.
+mat4[mat4[ ,2] < 50,c(3,4)]
+
+# 9.
+colnames(mat4) <- c("Premiere","Deuxieme","Troisieme","Quatrieme")
+
+# 10.
+mat4[,c("Premiere","Quatrieme")]
+
+# 11.
+
+# Vrai pour min,max,mean
+min(mat4) # On peut appliquer une fonction sur la matrice
+min(mat4[,"Deuxieme"]) # Mais aussi seulement sur une colonne
+min(mat4[4,]) # Ou une ligne
+
+summary(mat4) # S'applique par colonne
+
+# III. Les boucles ####
+
+for (i in c(1:10)){ 
+  print(i)
+}
+
+for (i in c(1:10)){ 
+  if (i <= 5){
+    print(i)
+  } else if (i == 6) {
+    print(i * 100)
+  } else {
+    print(0)
+  }
+}
+
+# 1. & 2.
+# On crée un vecteur vide
+v <- c()
+
+# Puis on boucle sur chacune des lignes de la matrice en comparant la valeur dans la troisieme colonne à notre chiffre
+for (i in c(1:nrow(mat4))) {
+  if (mat4[i,3] < 75) {
+    v <- c(v,i)
+  }
+}
+v
+
+# IV. Les listes et les fonctions ####
+
+l1 <- list(1, "ah tiens", 4, " qu'est-ce que je fais à côté d'un 4")
+l1
+
+l2 <- list("var1" = 1, "var2" = "v'là autre chose", "var3" = 4, "var4" = "je ne suis pas un numéro")
+
+l2[[3]]
+l2["var3"]
+l2$var3
+
+l3 <- c(l1, l2)
+print(l3)
+
+# 1. 
+mat_liste <- list(1,3,4,6,7,9)
+ch_liste <- list("a","e","i","o","u","y")
+bool_liste <- list(TRUE,FALSE,TRUE,FALSE)
+ma_liste <- list(mat_liste = matrix(1,2,3))
+
+# Les Fonctions
+
+is_pair <- function(nb){
+  tryCatch(
+    {
+      if (nb %% 2 == 0){
+        res = TRUE
+      } else {
+        res = FALSE
+      }
+      return(res)
+    },
+    error = function(error_message) {
+      message(" Hop hop hop! Il me faut du numérique en entrée...")
+      return(NA)
+    }
+  )
+}
+is_pair("mais enfin")
+
+# V. Appliquer des fonctions à un ensemble d'éléments ####
+
+# 1.
+mat5 <- matrix(sample(1:100,60), nrow = 20, ncol = 3)
+sum(mat5) # Somme de tous les éléments de la matrice
+apply(mat5, 1, sum) # Somme de chaque ligne
+apply(mat5, 2, sum) # Somme de chaque colonne
+
+# 2.
+mat5[apply(mat5,1,sum) == min(apply(mat5, 1, sum))]
+v_sum_col = apply(mat5,1,sum)
+ligne_mini <- which(v_sum_col == min(v_sum_col))
+print(paste("La ligne minimum des sommes est:", ligne_mini))
+
+# 3.
+
+mat_cond <- apply(mat5,c(1,2),is_pair)
+vector_sum <- apply(mat_cond,1,sum)
+which(vector_sum == max(vector_sum))
+
+
+mat6 <- matrix(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),sample(1:100,60)),nrow = 20)
+mat6
+tapply(mat6[, 2], mat6[, 1], sum)
+tapply(mat6[, 2], mat6[, 1], max)
+
+l4 <- list("mat" = matrix(c(1:100), nrow = 50), "vec" = c(1,5,8,9), "num" = 2, "ch" = "Voilà")
+l4
+lapply(l4, class)
+microbenchmark::microbenchmark(
+  times = 100L,
+  "Lapply" = results_ <- lapply(l4, class),
+  "boucle" = {
+    results <- list()
+    for (i in c(1:length(l4))){
+      results <- c(results, class(l4[i]))
+    }
+  })
+# VI. Les packages
+
+# 1.
+install.packages("readxl")
